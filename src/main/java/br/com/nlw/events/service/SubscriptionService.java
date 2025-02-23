@@ -32,17 +32,17 @@ public class SubscriptionService {
 			throw new EventNotFoundException("Evento "+eventName+" não existe.");
 		}
 		
-		User userRec = null;
-		if (userId != null) {
-			userRec = userRepo.findById(userId).orElse(null);
-			if (userRec == null) {
-				userRec = userRepo.save(user);
-			}
+		User userRec = userRepo.findByEmail(user.getEmail());
+		if (userRec == null) {
+			userRec = userRepo.save(user);
 		}
 		
-		User indicador = userRepo.findById(userId).orElse(null);
-		if (indicador == null) {
-			throw new UserIndicatorNotFoundException("Usuário indicador "+userId+" não existe.");
+		User indicador = null;
+		if (userId != null) {
+			indicador = userRepo.findById(userId).orElse(null);
+			if (indicador == null) {
+				throw new UserIndicatorNotFoundException("Usuário indicador "+userId+" não existe.");
+			}
 		}
 		
 		Subscription subs = new Subscription();
